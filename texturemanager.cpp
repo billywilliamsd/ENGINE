@@ -46,6 +46,5 @@ void TextureManager::Draw(string id, int x, int y, int width, int height, SDL_Fl
 void TextureManager::DrawFrame(string id, int x, int y, int width, int height, int row, int frame, SDL_FlipMode flip){
     SDL_FRect src = {width*frame, height*(row - 1), width, height};
     SDL_FRect dst = {x, y, width, height};
-    //cout << "TextureManager::DrawFrame(" << id << ", " << x << ", " << y << ", " << width << ", " << height << ", " << row << ", " << frame << ", " << flip << endl;
     SDL_RenderTextureRotated(Engine::GetInstance()->GetRenderer(), m_TextureMap[id], &src, &dst, 0, nullptr, flip);
 }
