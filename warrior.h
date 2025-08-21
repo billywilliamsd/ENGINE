@@ -2,6 +2,7 @@
 #define WARRIOR_H
 #include "character.h"
 #include "animation.h"
+#include "RigidBody.h"
 
 class Warrior : public Character{
 public:
@@ -10,9 +11,9 @@ public:
     virtual void Draw();
     virtual void Clean();
     virtual void Update(float dt);
-
 private:
     Animation* m_Animation;
+    RigidBody* m_RigidBody;
 };
 
 #endif 
