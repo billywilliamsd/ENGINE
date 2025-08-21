@@ -2,6 +2,7 @@
 #define ANIMATION_H
 #include <SDL3/SDL.h>
 #include <iostream>
+#include <string>
 using namespace std;
 
 class Animation{

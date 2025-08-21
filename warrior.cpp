@@ -6,12 +6,12 @@
 using namespace std;
 
 Warrior::Warrior(Properties* p) : Character(p){
-    m_Animation->SetProps(p->TextureID, 1, 4, 128, SDL_FLIP_HORIZONTAL);
+    m_Animation = new Animation();
+    m_Animation->SetProps(m_TextureID, 1, 4, 128, SDL_FLIP_HORIZONTAL);
 }
 
 void Warrior::Draw(){
     m_Animation->Draw(m_Transform->X, m_Transform->Y, m_Width, m_Height);
-    //TextureManager::GetInstance()->DrawFrame(m_TextureID, m_Transform->X, m_Transform->Y, m_Width, m_Height, m_Row, m_Frame);
 }
 
 void Warrior::Update(float dt){

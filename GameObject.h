@@ -36,6 +36,7 @@ public:
 protected:
     Transform* m_Transform;
     int m_Width, m_Height;
+    int X, Y;
     string m_TextureID;
     SDL_FlipMode m_Flip;
 };
