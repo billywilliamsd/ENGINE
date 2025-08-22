@@ -11,6 +11,8 @@ public:
     virtual void Draw();
     virtual void Clean();
     virtual void Update(float dt);
+
+    int idle;
 private:
     Animation* m_Animation;
     RigidBody* m_RigidBody;
