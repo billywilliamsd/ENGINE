@@ -57,6 +57,8 @@ void Engine::Quit(){
 
 void Engine::Update(){
     player->Update(0);
+    if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)) cout << "GetKeyDown(SDL_SCANCODE_A) == true\n";
+    if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_D)) cout << "GetKeyDown(SDL_SCANCODE_D) == true\n";
 }
 
 void Engine::Render(){
