@@ -10,10 +10,10 @@ using namespace std;
 
 TextManager* TextManager::instance = nullptr;
 extern TTF_Font* f;
-extern InputText* SCANCODE_A;
-extern InputText* SCANCODE_D;
-extern InputText* SCANCODE_W;
-extern InputText* SCANCODE_S;
+extern Text* SCANCODE_A;
+extern Text* SCANCODE_D;
+extern Text* SCANCODE_W;
+extern Text* SCANCODE_S;
 extern Text* A_TICK;
 
 bool Text::loadFromRenderedText(string s, SDL_Color c){
@@ -43,33 +43,34 @@ void Text::Render(float x, float y){
 
 void TextManager::Update(){
     delete SCANCODE_A;
-    SCANCODE_A = new InputText();
+    SCANCODE_A = new Text();
     if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)){
-        if(SCANCODE_A->down == false){
-            SCANCODE_A->down = true;
-            SCANCODE_A->tick = SDL_GetTicks();
-            A_TICK->loadFromRenderedText(to_string(SCANCODE_A->tick), RED);
+        if(InputManager::GetInstance()->a_isdown == false){
+            InputManager::GetInstance()->a_isdown = true;
+            InputManager::GetInstance()->a_tick = SDL_GetTicks();
+            cout << SDL_GetTicks() << "::" << InputManager::GetInstance()->a_tick << endl;
+            A_TICK->loadFromRenderedText(to_string(InputManager::GetInstance()->a_tick), RED);
         }
         SCANCODE_A->loadFromRenderedText("SDL_SCANCODE_A", RED);
     }
     else{
-        SCANCODE_A->down = false;
+        InputManager::GetInstance()->a_isdown = false;
+        InputManager::GetInstance()->a_tick = 0;
         SCANCODE_A->loadFromRenderedText("SDL_SCANCODE_A", BLACK);
-        SCANCODE_A->tick = 0;
     }
 
     delete SCANCODE_D;
-    SCANCODE_D = new InputText();
+    SCANCODE_D = new Text();
     if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_D)) SCANCODE_D->loadFromRenderedText("SDL_SCANCODE_D", RED);
     else SCANCODE_D->loadFromRenderedText("SDL_SCANCODE_D", BLACK);
 
     delete SCANCODE_W;
-    SCANCODE_W = new InputText();
+    SCANCODE_W = new Text();
     if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_W)) SCANCODE_W->loadFromRenderedText("SDL_SCANCODE_W", RED);
     else SCANCODE_W->loadFromRenderedText("SDL_SCANCODE_W", BLACK);
 
     delete SCANCODE_S;
-    SCANCODE_S = new InputText();
+    SCANCODE_S = new Text();
     if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_S)) SCANCODE_S->loadFromRenderedText("SDL_SCANCODE_S", RED);
     else SCANCODE_S->loadFromRenderedText("SDL_SCANCODE_S", BLACK);
 }

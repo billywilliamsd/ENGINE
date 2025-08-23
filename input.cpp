@@ -2,6 +2,7 @@
 #include "engine.h"
 
 Input* Input::s_Instance = nullptr;
+InputManager* InputManager::instance = nullptr;
 
 Input::Input(){
     m_KeyStates = SDL_GetKeyboardState(nullptr);
