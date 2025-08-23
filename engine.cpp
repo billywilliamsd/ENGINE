@@ -13,10 +13,11 @@ using namespace std;
 Engine* Engine::instance = nullptr;
 Warrior* player = nullptr;
 TTF_Font* f = nullptr;
-Text* SCANCODE_A = new Text();
-Text* SCANCODE_D = new Text();
-Text* SCANCODE_W = new Text();
-Text* SCANCODE_S = new Text();
+InputText* SCANCODE_A = new InputText();
+InputText* SCANCODE_D = new InputText();
+InputText* SCANCODE_W = new InputText();
+InputText* SCANCODE_S = new InputText();
+Text* A_TICK = new Text();
 
 Engine::Engine(){}
 
@@ -66,6 +67,10 @@ bool Engine::Init(){
         SDL_Log("Could not load text texture %s! SDL_ttf Error: %s\n", path.c_str(), SDL_GetError());
         return false;
     }
+    if(!A_TICK->loadFromRenderedText(" ", BLACK)){
+        SDL_Log("Could not load text texture %s! SDL_ttf Error: %s\n", path.c_str(), SDL_GetError());
+        return false;
+    }
 
     bool loaded = TextureManager::GetInstance()->Load("tree", "../texturebin/tree.png");
     if(loaded == false) assert(0);
@@ -104,6 +109,7 @@ void Engine::Render(){
     TextureManager::GetInstance()->Draw("tree", 0, 0, 50, 50);
     player->Draw();
     SCANCODE_A->Render(500, 50);
+    if(SCANCODE_A->down) A_TICK->Render(500, 450);
     SCANCODE_D->Render(500, 100);
     SCANCODE_W->Render(500, 150);
     SCANCODE_S->Render(500, 200);

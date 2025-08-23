@@ -24,6 +24,17 @@ public:
     int m_Height;
 };
 
+class InputText : public Text{
+public:
+    InputText() : Text(){
+        down = false;
+        tick = 0;
+    }
+    
+    bool down;
+    Uint64 tick;
+};
+
 class TextManager{
     TextManager(){}
     static TextManager* instance;
