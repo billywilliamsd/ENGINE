@@ -2,18 +2,32 @@
 #include "texturemanager.h"
 #include "warrior.h"
 #include "input.h"
+#include "text.h"
+#include <SDL3_ttf/SDL_ttf.h>
 #include <iostream>
 #include <cassert>
+#include <string>
+#define BLACK {0x00, 0x00, 0x00}
 using namespace std;
 
 Engine* Engine::instance = nullptr;
 Warrior* player = nullptr;
+TTF_Font* f = nullptr;
+Text* SCANCODE_A = new Text();
+Text* SCANCODE_D = new Text();
+Text* SCANCODE_W = new Text();
+Text* SCANCODE_S = new Text();
 
 Engine::Engine(){}
 
 bool Engine::Init(){
     if(!SDL_Init(SDL_INIT_VIDEO)){
         SDL_Log("%s: %s", "Failed to initialize SDL", SDL_GetError());
+        return false;
+    }
+
+    if(!TTF_Init()){
+        SDL_Log("SDL_ttf could not initialize! SDL_ttf error: %s\n", SDL_GetError());
         return false;
     }
 
@@ -26,6 +40,30 @@ bool Engine::Init(){
     r = SDL_CreateRenderer(w, nullptr);
     if(r == nullptr){
         SDL_Log("Failed to create renderer: %s\n", SDL_GetError());
+        return false;
+    }
+
+    string path = "../Ubuntu-L.ttf";
+    f = TTF_OpenFont(path.c_str(), 28);
+    if(f == nullptr){
+        SDL_Log( "Could not load %s! SDL_ttf Error: %s\n", path.c_str(), SDL_GetError());
+        return false;
+    }
+
+    if(!SCANCODE_A->loadFromRenderedText("SDL_SCANCODE_A", BLACK)){
+        SDL_Log("Could not load text texture %s! SDL_ttf Error: %s\n", path.c_str(), SDL_GetError());
+        return false;
+    }
+    if(!SCANCODE_D->loadFromRenderedText("SDL_SCANCODE_D", BLACK)){
+        SDL_Log("Could not load text texture %s! SDL_ttf Error: %s\n", path.c_str(), SDL_GetError());
+        return false;
+    }
+    if(!SCANCODE_W->loadFromRenderedText("SDL_SCANCODE_W", BLACK)){
+        SDL_Log("Could not load text texture %s! SDL_ttf Error: %s\n", path.c_str(), SDL_GetError());
+        return false;
+    }
+    if(!SCANCODE_S->loadFromRenderedText("SDL_SCANCODE_S", BLACK)){
+        SDL_Log("Could not load text texture %s! SDL_ttf Error: %s\n", path.c_str(), SDL_GetError());
         return false;
     }
 
@@ -57,6 +95,7 @@ void Engine::Quit(){
 
 void Engine::Update(){
     player->Update(0);
+    TextManager::GetInstance()->Update();
 }
 
 void Engine::Render(){
@@ -64,6 +103,10 @@ void Engine::Render(){
     SDL_RenderClear(r);
     TextureManager::GetInstance()->Draw("tree", 0, 0, 50, 50);
     player->Draw();
+    SCANCODE_A->Render(500, 50);
+    SCANCODE_D->Render(500, 100);
+    SCANCODE_W->Render(500, 150);
+    SCANCODE_S->Render(500, 200);
     SDL_RenderPresent(r);
 }
 
