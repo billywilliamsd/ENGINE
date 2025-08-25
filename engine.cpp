@@ -2,7 +2,6 @@
 #include "texturemanager.h"
 #include "warrior.h"
 #include "input.h"
-#include "text.h"
 #include <SDL3_ttf/SDL_ttf.h>
 #include <iostream>
 #include <cassert>
@@ -13,11 +12,6 @@ using namespace std;
 Engine* Engine::instance = nullptr;
 Warrior* player = nullptr;
 TTF_Font* f = nullptr;
-InputText* SCANCODE_A = new InputText();
-InputText* SCANCODE_D = new InputText();
-InputText* SCANCODE_W = new InputText();
-InputText* SCANCODE_S = new InputText();
-Text* A_TICK = new Text();
 
 Engine::Engine(){}
 
@@ -51,27 +45,6 @@ bool Engine::Init(){
         return false;
     }
 
-    if(!SCANCODE_A->loadFromRenderedText("SDL_SCANCODE_A", BLACK)){
-        SDL_Log("Could not load text texture %s! SDL_ttf Error: %s\n", path.c_str(), SDL_GetError());
-        return false;
-    }
-    if(!SCANCODE_D->loadFromRenderedText("SDL_SCANCODE_D", BLACK)){
-        SDL_Log("Could not load text texture %s! SDL_ttf Error: %s\n", path.c_str(), SDL_GetError());
-        return false;
-    }
-    if(!SCANCODE_W->loadFromRenderedText("SDL_SCANCODE_W", BLACK)){
-        SDL_Log("Could not load text texture %s! SDL_ttf Error: %s\n", path.c_str(), SDL_GetError());
-        return false;
-    }
-    if(!SCANCODE_S->loadFromRenderedText("SDL_SCANCODE_S", BLACK)){
-        SDL_Log("Could not load text texture %s! SDL_ttf Error: %s\n", path.c_str(), SDL_GetError());
-        return false;
-    }
-    if(!A_TICK->loadFromRenderedText(" ", BLACK)){
-        SDL_Log("Could not load text texture %s! SDL_ttf Error: %s\n", path.c_str(), SDL_GetError());
-        return false;
-    }
-
     bool loaded = TextureManager::GetInstance()->Load("tree", "../texturebin/tree.png");
     if(loaded == false) assert(0);
 
@@ -100,7 +73,6 @@ void Engine::Quit(){
 
 void Engine::Update(){
     player->Update(0);
-    TextManager::GetInstance()->Update();
 }
 
 void Engine::Render(){
@@ -108,11 +80,6 @@ void Engine::Render(){
     SDL_RenderClear(r);
     TextureManager::GetInstance()->Draw("tree", 0, 0, 50, 50);
     player->Draw();
-    SCANCODE_A->Render(500, 50);
-    if(SCANCODE_A->down) A_TICK->Render(500, 450);
-    SCANCODE_D->Render(500, 100);
-    SCANCODE_W->Render(500, 150);
-    SCANCODE_S->Render(500, 200);
     SDL_RenderPresent(r);
 }
 
