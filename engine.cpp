@@ -2,6 +2,7 @@
 #include "texturemanager.h"
 #include "warrior.h"
 #include "input.h"
+#include "timer.h"
 #include <SDL3_ttf/SDL_ttf.h>
 #include <iostream>
 #include <cassert>
@@ -72,7 +73,8 @@ void Engine::Quit(){
 
 
 void Engine::Update(){
-    player->Update(0);
+    float dt = Timer::GetInstance()->GetDeltaTime();
+    player->Update(dt);
 }
 
 void Engine::Render(){
