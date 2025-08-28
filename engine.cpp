@@ -71,7 +71,6 @@ void Engine::Quit(){
 
 }
 
-
 void Engine::Update(){
     float dt = Timer::GetInstance()->GetDeltaTime();
     player->Update(0.8); //0.8 placeholder for dt

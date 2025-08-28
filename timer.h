@@ -12,6 +12,8 @@ class Timer{
 public:
     inline static Timer* GetInstance(){return (instance == nullptr) ? new Timer() : instance;}
     inline float GetDeltaTime(){return m_DeltaTime;}
+    inline float GetLastTime(){return m_LastTime;}
+    inline void SetLastTime(float x){m_LastTime = x;}
     void Tick();
 };
 
