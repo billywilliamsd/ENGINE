@@ -11,7 +11,6 @@ int main(int argc, char** argv){
         Engine::GetInstance()->Update();
         Engine::GetInstance()->Render();
         Timer::GetInstance()->Tick();
-        cout << Timer::GetInstance()->GetLastTime() << endl;
     }
 
     Engine::GetInstance()->Clean();
