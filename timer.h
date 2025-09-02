@@ -1,11 +1,12 @@
 #ifndef TIMER_H
 #define TIMER_H
+#include <iostream>
 
 const int TARGET_FPS = 60;
 const float TARGET_DELTATIME = 1.5f;
 
 class Timer{
-    Timer(){}
+    Timer(){m_LastTime = 0;}
     static Timer* instance;
     float m_DeltaTime;
     float m_LastTime;

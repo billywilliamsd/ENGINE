@@ -10,9 +10,8 @@ int main(int argc, char** argv){
         Engine::GetInstance()->Events();
         Engine::GetInstance()->Update();
         Engine::GetInstance()->Render();
-        Timer::GetInstance()->SetLastTime(4.5f);
+        Timer::GetInstance()->Tick();
         cout << Timer::GetInstance()->GetLastTime() << endl;
-        //Timer::GetInstance()->Tick();
     }
 
     Engine::GetInstance()->Clean();
