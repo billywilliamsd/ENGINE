@@ -80,8 +80,7 @@ void Engine::Quit(){
 
 void Engine::Update(){
     float dt = Timer::GetInstance()->GetDeltaTime();
-    int scalar = 1;
-    player->Update(dt * scalar);
+    player->Update(dt);
 }
 
 void Engine::Render(){
