@@ -39,6 +39,11 @@ bool Engine::Init(){
         return false;
     }
 
+    if(SDL_SetRenderVSync(r, 1) == false){
+        SDL_Log("Could not enable VSync! SDL error: %s\n", SDL_GetError());
+        return false;
+    }
+
     string path = "../Ubuntu-L.ttf";
     f = TTF_OpenFont(path.c_str(), 28);
     if(f == nullptr){
@@ -53,6 +58,8 @@ bool Engine::Init(){
     bool loaded2 = TextureManager::GetInstance()->Load("player", "../texturebin/sprite.png");
     if(loaded2 == false) assert(0);
 
+    bool loaded3 = TextureManager::GetInstance()->LoadText("FPS", "frames per second...", {0x00, 0x00, 0x00, 0x00});
+    if(loaded3 == false) assert(0);
 
     m_IsRunning = true;
     return true;
@@ -73,7 +80,7 @@ void Engine::Quit(){
 
 void Engine::Update(){
     float dt = Timer::GetInstance()->GetDeltaTime();
-    int scalar = 9;
+    int scalar = 1;
     player->Update(dt * scalar);
 }
 
@@ -82,6 +89,7 @@ void Engine::Render(){
     SDL_RenderClear(r);
     TextureManager::GetInstance()->Draw("tree", 0, 0, 50, 50);
     player->Draw();
+    TextureManager::GetInstance()->Draw("FPS", 0, 0, 400, 50);
     SDL_RenderPresent(r);
 }
 

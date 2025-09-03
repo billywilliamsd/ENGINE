@@ -13,6 +13,8 @@ public:
     static TextureManager* GetInstance(){return instance = (instance != nullptr)? instance: new TextureManager();}
     
     bool Load(string id, string path);
+    bool LoadText(string id, string t, SDL_Color c);
+    void UpdateText(string id, string t, SDL_Color c);
     void Drop(string id);
     void Clean();
 

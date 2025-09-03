@@ -1,8 +1,12 @@
 #include "texturemanager.h"
 #include <SDL3_image/SDL_image.h>
 #include "engine.h"
+#include <SDL3_ttf/SDL_ttf.h>
+#include <cassert>
 #include <iostream>
 using namespace std;
+
+extern TTF_Font* f;
 
 TextureManager* TextureManager::instance = nullptr;
 
@@ -24,6 +28,44 @@ bool TextureManager::Load(string id, string file){
     m_TextureMap[id] = t;
     return true;
 }
+
+bool TextureManager::LoadText(string id, string t, SDL_Color c){
+    SDL_DestroyTexture(m_TextureMap[id]);
+    SDL_Surface* s = TTF_RenderText_Blended(f, t.c_str(), 0, c);
+    if(s == nullptr){
+        SDL_Log("Unable to render text surface! SDL_ttf Error: %s\n", SDL_GetError());
+        return false;
+    }
+    
+    SDL_Texture* tx = SDL_CreateTextureFromSurface(Engine::GetInstance()->GetRenderer(), s);
+    if(tx == nullptr){
+        SDL_Log("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+        return false;
+    }
+
+    m_TextureMap[id] = tx;
+    SDL_DestroySurface(s);
+    return true;
+}
+
+/*void TextureManager::UpdateText(string id, string t, SDL_Color c){
+    SDL_DestroyTexture(m_TextureMap[id]);
+
+    SDL_Surface* s = TTF_RenderText_Blended(f, t.c_str(), 0, c);
+    if(s == nullptr){
+        SDL_Log("Unable to render text surface! SDL_ttf Error: %s\n", SDL_GetError());
+        assert(0);
+    }
+    
+    SDL_Texture* tx = SDL_CreateTextureFromSurface(Engine::GetInstance()->GetRenderer(), s);
+    if(tx == nullptr){
+        SDL_Log("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+        assert(0);
+    }
+
+    m_TextureMap[id] = tx;
+    SDL_DestroySurface(s);
+}*/
 
 void TextureManager::Drop(string id){
     SDL_DestroyTexture(m_TextureMap[id]);
