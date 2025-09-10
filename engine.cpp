@@ -51,15 +51,15 @@ bool Engine::Init(){
         return false;
     }
 
-    bool loaded = TextureManager::GetInstance()->Load("tree", "../texturebin/tree.png");
-    if(loaded == false) assert(0);
+    if(!TextureManager::GetInstance()->Load("tree", "../texturebin/tree.png"))
+        assert(0);
 
     player = new Warrior(new Properties("player", 150, 150, 64, 64));
-    bool loaded2 = TextureManager::GetInstance()->Load("player", "../texturebin/sprite.png");
-    if(loaded2 == false) assert(0);
+    if(!TextureManager::GetInstance()->Load("player", "../texturebin/sprite.png"))
+        assert(0);
 
-    bool loaded3 = TextureManager::GetInstance()->LoadText("FPS", "frames per second...", {0x00, 0x00, 0x00, 0x00});
-    if(loaded3 == false) assert(0);
+    if(!TextureManager::GetInstance()->LoadText("FPS", "FPS: ", {0x00, 0x00, 0x00, 0x00}))
+        assert(0);
 
     m_IsRunning = true;
     return true;
@@ -88,7 +88,7 @@ void Engine::Render(){
     SDL_RenderClear(r);
     TextureManager::GetInstance()->Draw("tree", 0, 0, 50, 50);
     player->Draw();
-    TextureManager::GetInstance()->Draw("FPS", 0, 0, 400, 50);
+    TextureManager::GetInstance()->Draw("FPS", 0, 0, 250, 50);
     SDL_RenderPresent(r);
 }
 
