@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cassert>
 #include <string>
+#include "MapParser.h"
 #define BLACK {0x00, 0x00, 0x00}
 using namespace std;
 
@@ -44,6 +45,11 @@ bool Engine::Init(){
         return false;
     }
 
+    if(!MapParser::GetInstance()->Load()){
+        cout << "Failed to load map!" << endl;
+    }
+    m_LevelMap = MapParser::GetInstance()->GetMap("L1");
+
     string path = "../Ubuntu-L.ttf";
     f = TTF_OpenFont(path.c_str(), 28);
     if(f == nullptr){
@@ -75,20 +81,22 @@ bool Engine::Clean(){
 }
 
 void Engine::Quit(){
-
+    m_IsRunning = false;
 }
 
 void Engine::Update(){
     float dt = Timer::GetInstance()->GetDeltaTime();
     player->Update(dt);
+    m_LevelMap->Update();
 }
 
 void Engine::Render(){
     SDL_SetRenderDrawColor(r, 0x00, 0xFF, 0x41, 0x00);
     SDL_RenderClear(r);
+    m_LevelMap->Render();
     TextureManager::GetInstance()->Draw("tree", 0, 0, 50, 50);
     player->Draw();
-    TextureManager::GetInstance()->Draw("FPS", 0, 0, 250, 50);
+    TextureManager::GetInstance()->Draw("FPS", 600, 0, 250, 50);
     SDL_RenderPresent(r);
 }
 
