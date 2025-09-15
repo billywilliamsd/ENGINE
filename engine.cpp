@@ -28,7 +28,7 @@ bool Engine::Init(){
         return false;
     }
 
-    w = SDL_CreateWindow("engine", 900, 600, 0);
+    w = SDL_CreateWindow("engine", 960, 640, 0);
     if(w == nullptr){
         SDL_Log("Failed to create window: %s\n", SDL_GetError());
         return false;
@@ -57,14 +57,8 @@ bool Engine::Init(){
         return false;
     }
 
-    if(!TextureManager::GetInstance()->Load("tree", "../texturebin/tree.png"))
-        assert(0);
-
     player = new Warrior(new Properties("player", 150, 150, 64, 64));
     if(!TextureManager::GetInstance()->Load("player", "../texturebin/sprite.png"))
-        assert(0);
-
-    if(!TextureManager::GetInstance()->LoadText("FPS", "FPS: ", {0x00, 0x00, 0x00, 0x00}))
         assert(0);
 
     m_IsRunning = true;
@@ -85,18 +79,16 @@ void Engine::Quit(){
 }
 
 void Engine::Update(){
-    float dt = Timer::GetInstance()->GetDeltaTime();
-    player->Update(dt);
+    //float dt = Timer::GetInstance()->GetDeltaTime();
+    player->Update(0.2f);
     m_LevelMap->Update();
 }
 
 void Engine::Render(){
-    SDL_SetRenderDrawColor(r, 0x00, 0xFF, 0x41, 0x00);
+    SDL_SetRenderDrawColor(r, 0x00, 0x00, 0x00, 0x00);
     SDL_RenderClear(r);
     m_LevelMap->Render();
-    TextureManager::GetInstance()->Draw("tree", 0, 0, 50, 50);
     player->Draw();
-    TextureManager::GetInstance()->Draw("FPS", 600, 0, 250, 50);
     SDL_RenderPresent(r);
 }
 

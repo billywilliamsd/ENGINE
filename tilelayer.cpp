@@ -3,12 +3,6 @@
 #include <iostream>
 using namespace std;
 
-void TileLayer::PrintMap(){
-    cout << m_TileMap[0][0] << " " << m_TileMap[0][1] << " " << m_TileMap[0][2] << endl;
-    cout << m_TileMap[1][0] << " " << m_TileMap[1][1] << " " << m_TileMap[1][2] << endl;
-    cout << m_TileMap[2][0] << " " << m_TileMap[2][1] << " " << m_TileMap[2][2] << endl;
-}
-
 TileLayer::TileLayer(int tilesize, int rowcount, int columncount, TileMap tilemap, TilesetList tilesets) :
     m_TileSize(tilesize), m_RowCount(rowcount), m_ColumnCount(columncount), m_TileMap(tilemap), m_Tilesets(tilesets){
     for(unsigned int i = 0; i < m_Tilesets.size(); i++){
@@ -29,12 +23,12 @@ void TileLayer::Render(){
                         if(tileID > m_Tilesets[k].FirstID && tileID < m_Tilesets[k].LastID){
                             tileID = tileID + m_Tilesets[k].TileCount - m_Tilesets[k].LastID;
                             index = k;
+                            cout << "\t\tm_Tilesets.size() == " << m_Tilesets.size() << "\n\t\tindex == " << k << endl;
                             break;
                         }
                     }
                 }
             
-
                 Tileset ts = m_Tilesets[index];
                 int tileRow = tileID / ts.ColumnCount;
                 int tileCol = tileID - (tileRow * ts.ColumnCount) - 1;
@@ -44,6 +38,7 @@ void TileLayer::Render(){
                     tileCol = ts.ColumnCount - 1;
                 }
                 
+
                 TextureManager::GetInstance()->DrawTile(ts.Name, ts.TileSize, ts.TileSize * j, ts.TileSize * i, tileRow, tileCol);
             }
         }

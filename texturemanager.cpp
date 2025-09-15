@@ -48,25 +48,6 @@ bool TextureManager::LoadText(string id, string t, SDL_Color c){
     return true;
 }
 
-/*void TextureManager::UpdateText(string id, string t, SDL_Color c){
-    SDL_DestroyTexture(m_TextureMap[id]);
-
-    SDL_Surface* s = TTF_RenderText_Blended(f, t.c_str(), 0, c);
-    if(s == nullptr){
-        SDL_Log("Unable to render text surface! SDL_ttf Error: %s\n", SDL_GetError());
-        assert(0);
-    }
-    
-    SDL_Texture* tx = SDL_CreateTextureFromSurface(Engine::GetInstance()->GetRenderer(), s);
-    if(tx == nullptr){
-        SDL_Log("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
-        assert(0);
-    }
-
-    m_TextureMap[id] = tx;
-    SDL_DestroySurface(s);
-}*/
-
 void TextureManager::Drop(string id){
     SDL_DestroyTexture(m_TextureMap[id]);
     m_TextureMap.erase(id);
@@ -89,4 +70,10 @@ void TextureManager::DrawFrame(string id, int x, int y, int width, int height, i
     SDL_FRect src = {width*frame, height*(row - 1), width, height};
     SDL_FRect dst = {x, y, width, height};
     SDL_RenderTextureRotated(Engine::GetInstance()->GetRenderer(), m_TextureMap[id], &src, &dst, 0, nullptr, flip);
+}
+
+void TextureManager::DrawTile(string tilesetID, int tilesize, int x, int y, int row, int frame, SDL_FlipMode flip){
+    SDL_FRect dst = {x, y, tilesize, tilesize};
+    SDL_FRect src = {tilesize * frame, tilesize * (row), tilesize, tilesize};
+    SDL_RenderTextureRotated(Engine::GetInstance()->GetRenderer(), m_TextureMap[tilesetID], &src, &dst, 0, 0, flip);
 }

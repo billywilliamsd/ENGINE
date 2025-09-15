@@ -11,7 +11,7 @@ add_subdirectory(SDL EXCLUDE_FROM_ALL)
 add_subdirectory(SDL3_image EXCLUDE_FROM_ALL)
 add_subdirectory(SDL3_ttf EXCLUDE_FROM_ALL)
 
-set(SOURCES main.cpp engine.cpp texturemanager.cpp warrior.cpp animation.cpp input.cpp timer.cpp IObject.h GameObject.h character.h warrior.h animation.h RigidBody.h input.h timer.h)
+set(SOURCES main.cpp engine.cpp texturemanager.cpp warrior.cpp animation.cpp input.cpp timer.cpp tilelayer.cpp MapParser.cpp tinystr.cpp tinyxml.cpp tinyxmlerror.cpp tinyxmlparser.cpp CollisionHandler.cpp IObject.h GameObject.h character.h warrior.h animation.h RigidBody.h input.h timer.h layer.h tilelayer.h gamemap.h tinystr.h tinyxml.h MapParser.h CollisionHandler.h Collider.h)
 add_executable(run ${SOURCES})
 target_include_directories(run PRIVATE "C:/billywilliamsd/ENGINE")
 

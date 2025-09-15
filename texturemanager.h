@@ -14,11 +14,11 @@ public:
     
     bool Load(string id, string path);
     bool LoadText(string id, string t, SDL_Color c);
-    void UpdateText(string id, string t, SDL_Color c);
     void Drop(string id);
     void Clean();
 
     void Draw(string id, int x, int y, int width, int height, SDL_FlipMode flip = SDL_FLIP_NONE);
     void DrawFrame(string id, int x, int y, int width, int height, int row, int frame, SDL_FlipMode flip = SDL_FLIP_NONE);
+    void DrawTile(string id, int x, int y, int height, int row, int frame, SDL_FlipMode flip = SDL_FLIP_NONE);
 };
 #endif

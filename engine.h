@@ -1,6 +1,7 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 #include <SDL3/SDL.h>
+#include "gamemap.h"
 
 class Engine{
     Engine();
@@ -8,9 +9,10 @@ class Engine{
     bool m_IsRunning;
     SDL_Window* w;
     SDL_Renderer* r;
+    GameMap* m_LevelMap;
 public:
     static Engine* GetInstance(){
-        return instance = (instance != nullptr)? instance:new Engine();
+        return instance = (instance != nullptr) ? instance : new Engine();
     }
 
     bool Init();
@@ -23,6 +25,7 @@ public:
 
     inline bool IsRunning(){return m_IsRunning;}
     inline SDL_Renderer* GetRenderer(){return r;}
+    inline GameMap* GetMap(){return m_LevelMap;}
 };
 
 #endif

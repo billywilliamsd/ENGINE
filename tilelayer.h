@@ -23,7 +23,6 @@ public:
     TileLayer(int tilesize, int rowcount, int columncount, TileMap tilemap, TilesetList tilesets);
     virtual void Render();
     virtual void Update();
-    virtual void PrintMap();
     inline TileMap GetTileMap(){return m_TileMap;}
 };
 #endif

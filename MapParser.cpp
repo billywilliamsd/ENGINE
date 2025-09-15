@@ -5,7 +5,7 @@
 MapParser* MapParser::instance = nullptr;
 
 bool MapParser::Load(){
-    return Parse("L1", "../maps/startermap.tmx");
+    return Parse("L1", "../maps/mapB.tmx");
 }
 
 bool MapParser::Parse(string id, string src){
@@ -13,6 +13,7 @@ bool MapParser::Parse(string id, string src){
     xml.LoadFile(src);
     if(xml.Error()){
         cout << "Failed to load " << src << endl;
+        cout << xml.ErrorDesc() << endl;
         return false;
     }
 
@@ -24,7 +25,8 @@ bool MapParser::Parse(string id, string src){
 
     TilesetList tilesets;
     for(TiXmlElement* e = root->FirstChildElement(); e!= nullptr; e = e->NextSiblingElement()){
-        if(e->Value() == string("tileset"))
+//        cout << e->Attribute("name");
+        if (e->Value() == string("tileset"))
             tilesets.push_back(ParseTileset(e));
     }
 
@@ -35,9 +37,6 @@ bool MapParser::Parse(string id, string src){
             gamemap->m_MapLayers.push_back(tilelayer);
         }
     }
-
-    vector<Layer*> x = gamemap->GetMapLayers();
-    x[0]->PrintMap();
 
     m_MapDict[id] = gamemap;
     return true;
@@ -78,7 +77,7 @@ TileLayer* MapParser::ParseTileLayer(TiXmlElement* xmlLayer, TilesetList tileset
         for(int col = 0; col < columncount; col++){
             getline(iss, id, ',');
             int q = stoi(id);
-            q = q - 1;
+            //q = q - 1;
             id = to_string(q);
             stringstream converter(id);
             converter >> tilemap[row][col];
