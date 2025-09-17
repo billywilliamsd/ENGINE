@@ -9,6 +9,7 @@
 #include <string>
 #include "MapParser.h"
 #define BLACK {0x00, 0x00, 0x00}
+#define TURQOISE {64, 224, 208, 0}
 using namespace std;
 
 Engine* Engine::instance = nullptr;
@@ -93,5 +94,5 @@ void Engine::Render(){
 }
 
 void Engine::Events(){
-    Input::GetInstance()->Listen();
+    InputHandler::GetInstance()->Listen();
 }

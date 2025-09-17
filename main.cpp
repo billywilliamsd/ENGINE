@@ -1,6 +1,7 @@
 #include "engine.h"
 #include "timer.h"
 #include "texturemanager.h"
+#include "input.h"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>

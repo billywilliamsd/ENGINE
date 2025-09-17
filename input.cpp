@@ -1,13 +1,16 @@
 #include "input.h"
 #include "engine.h"
+#include <string>
+#include <iostream>
+using namespace std;
 
-Input* Input::s_Instance = nullptr;
+InputHandler* InputHandler::s_Instance = nullptr;
 
-Input::Input(){
+InputHandler::InputHandler() : L(nullptr){
     m_KeyStates = SDL_GetKeyboardState(nullptr);
 }
 
-void Input::Listen(){
+void InputHandler::Listen(){
     SDL_Event event;
 
     while(SDL_PollEvent(&event)){
@@ -25,14 +28,74 @@ void Input::Listen(){
     }
 }
 
-bool Input::GetKeyDown(SDL_Scancode key){
+bool InputHandler::GetKeyDown(SDL_Scancode key){
     return m_KeyStates[key] == 1;
 }
 
-void Input::KeyUp(){
+void InputHandler::KeyUp(){
     m_KeyStates = SDL_GetKeyboardState(nullptr);
 }
 
-void Input::KeyDown(){
+void InputHandler::KeyDown(){
     m_KeyStates = SDL_GetKeyboardState(nullptr);
+}
+
+void InputHandler::Push(int n){
+    if(L == nullptr) L = new Key{n, nullptr};
+    else PushKeys(n, L);
+}
+
+void InputHandler::PushKeys(int n, Key* g){
+    if(g->next == nullptr) g->next = new Key{n, nullptr};
+    else PushKeys(n, g->next);
+}
+
+void InputHandler::Print(){
+    PrintKeys(L);
+}
+
+void InputHandler::PrintKeys(Key* g){
+    if(g == nullptr) return;
+    cout << g->code << endl;
+    PrintKeys(g->next);
+}
+
+void InputHandler::Remove(int n){
+    if(L == nullptr) return;
+    if(L->code == n){
+        if(L->next == nullptr){
+            delete(L);
+            return;
+        }
+        Key* temp = L->next;
+        delete(L);
+        L = temp;
+    }
+    
+    RemoveKeys(n, L);
+}
+
+void InputHandler::RemoveKeys(int n, Key* g){
+    if(g->next->code == n){
+        if(g->next->next == nullptr){
+            delete(g->next);
+            g->next = nullptr;
+            return;
+        }
+        Key* temp = g->next->next;
+        delete(g->next);
+        g->next = temp;
+        return;
+    }
+}
+
+bool InputHandler::Down(int n){
+    if(L == nullptr) return false;
+    else if(L->code == n) return true;
+    else return IsDown(n, L->next);
+}
+
+bool InputHandler::IsDown(int n, Key* g){
+    if(g == nullptr) return false;
+    else if(g->code != n) return IsDown(n, g->next);
 }

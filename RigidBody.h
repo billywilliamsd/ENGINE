@@ -36,10 +36,10 @@ public:
         m_Acceleration.Y = m_Force.Y/m_Mass;
         m_Velocity = m_Acceleration*dt;
         m_Position = m_Velocity*dt;
-        TextureManager::GetInstance()->LoadText("ACCELX", "m_Acceleration.X == " + to_string(int(m_Acceleration.X)), ORANGE);
-        TextureManager::GetInstance()->LoadText("ACCELY", "m_Acceleration.Y == " + to_string(int(m_Acceleration.Y)), ORANGE);
-        TextureManager::GetInstance()->LoadText("VEL", "m_Velocity == (" + to_string(int(m_Velocity.X) ) + "," + to_string(int(m_Velocity.Y)) + ")", ORANGE);
-        TextureManager::GetInstance()->LoadText("POS", "m_Position == (" + to_string(int(m_Position.X)) + "," + to_string(int(m_Position.Y)) + ")", ORANGE);
+        //TextureManager::GetInstance()->LoadText("ACCELX", "m_Acceleration.X == " + to_string(int(m_Acceleration.X)), ORANGE);
+        //TextureManager::GetInstance()->LoadText("ACCELY", "m_Acceleration.Y == " + to_string(int(m_Acceleration.Y)), ORANGE);
+        //TextureManager::GetInstance()->LoadText("VEL", "m_Velocity == (" + to_string(int(m_Velocity.X) ) + "," + to_string(int(m_Velocity.Y)) + ")", ORANGE);
+        //TextureManager::GetInstance()->LoadText("POS", "m_Position == (" + to_string(int(m_Position.X)) + "," + to_string(int(m_Position.Y)) + ")", ORANGE);
     }
 };
 
