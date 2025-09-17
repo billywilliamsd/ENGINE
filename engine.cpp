@@ -9,6 +9,8 @@
 #include <string>
 #include "MapParser.h"
 #define BLACK {0x00, 0x00, 0x00}
+#define GREEN {0x00, 255, 0x00, 0x00}
+#define ORANGE {255, 40, 0, 0}
 #define TURQOISE {64, 224, 208, 0}
 using namespace std;
 
@@ -62,6 +64,8 @@ bool Engine::Init(){
     if(!TextureManager::GetInstance()->Load("player", "../texturebin/sprite.png"))
         assert(0);
 
+    TextureManager::GetInstance()->LoadText("WW", "W", ORANGE);
+
     m_IsRunning = true;
     return true;
 }
@@ -90,6 +94,10 @@ void Engine::Render(){
     SDL_RenderClear(r);
     m_LevelMap->Render();
     player->Draw();
+    //TextureManager::GetInstance()->LoadText("KEYS", InputHandler::GetInstance()->buffer, TURQOISE);
+    //TextureManager::GetInstance()->Draw("KEYS", 700, 500, 200, 100);
+    //TextureManager::GetInstance()->Draw("WW", 0, 450, 100, 100);
+    TextureManager::GetInstance()->Draw("KEYLIST", 0, 500, 100, 50);
     SDL_RenderPresent(r);
 }
 
