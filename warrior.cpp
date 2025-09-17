@@ -7,6 +7,8 @@
 #include "CollisionHandler.h"
 #include "SDL3/SDL.h"
 #include <iostream>
+#define GREEN {0x00, 255, 0x00, 0x00}
+#define TURQOISE {64, 224, 208, 0}
 using namespace std;
 
 int boxsize = 50;
@@ -24,7 +26,20 @@ Warrior::Warrior(Properties* p) : Character(p){
 void Warrior::Draw(){
     if(idle == false) m_Animation->Draw(m_Transform->X, m_Transform->Y, m_Width, m_Height);
     else TextureManager::GetInstance()->DrawFrame("player", m_Transform->X, m_Transform->Y, m_Width, m_Height, orient, 0);
+    string coords = to_string(int(m_Transform->X)) + "," + to_string(int(m_Transform->Y));
+    TextureManager::GetInstance()->LoadText("COORDS", coords, GREEN);
+    TextureManager::GetInstance()->Draw("COORDS", 600, 0, 150, 50);
     SDL_FRect box = m_Collider->GetBox();
+    string coords2 = to_string(int(box.x)) + "," + to_string(int(box.y));
+    TextureManager::GetInstance()->LoadText("COORDS2", coords2, GREEN);
+    TextureManager::GetInstance()->Draw("COORDS2", 600, 50, 150, 50);
+    TextureManager::GetInstance()->Draw("ACCELX", 0, 0, 500, 50);
+    TextureManager::GetInstance()->Draw("ACCELY", 0, 50, 500, 50);
+    TextureManager::GetInstance()->Draw("VEL", 0, 100, 500, 50);
+    TextureManager::GetInstance()->Draw("POS", 0, 150, 500, 50);
+    TextureManager::GetInstance()->Draw("SAFEX", 0, 200, 500, 50);
+    TextureManager::GetInstance()->Draw("SAFEY", 0, 250, 500, 50);
+    TextureManager::GetInstance()->Draw("MOVEKEY", 0, 500, 100, 100);
     SDL_SetRenderDrawColor(Engine::GetInstance()->GetRenderer(), 0x00, 255, 0x00, 0x00);
     if(SDL_RenderRect(Engine::GetInstance()->GetRenderer(), &box) == false) cout << "SDL_RenderRect() == false\n";
 }
@@ -32,9 +47,11 @@ void Warrior::Draw(){
 void Warrior::Update(float dt){
     idle = true;
     m_RigidBody->UnSetForce();
+    TextureManager::GetInstance()->Drop("MOVEKEY");
 
     if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_A)){
         if(!Input::GetInstance()->m_KeyStates[SDL_SCANCODE_D] && !Input::GetInstance()->m_KeyStates[SDL_SCANCODE_W] && !Input::GetInstance()->m_KeyStates[SDL_SCANCODE_S]){
+            TextureManager::GetInstance()->LoadText("MOVEKEY", "A", TURQOISE);
             m_RigidBody->ApplyForceX(-150);
             orient = 2;
             idle = false;
@@ -43,6 +60,7 @@ void Warrior::Update(float dt){
     }
     if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_D)){
         if(!Input::GetInstance()->m_KeyStates[SDL_SCANCODE_A] && !Input::GetInstance()->m_KeyStates[SDL_SCANCODE_W] && !Input::GetInstance()->m_KeyStates[SDL_SCANCODE_S]){
+            TextureManager::GetInstance()->LoadText("MOVEKEY", "D", TURQOISE);
             m_RigidBody->ApplyForceX(150);
             orient = 3;
             idle = false;
@@ -51,6 +69,7 @@ void Warrior::Update(float dt){
     }
     if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_W)){
         if(!Input::GetInstance()->m_KeyStates[SDL_SCANCODE_A] && !Input::GetInstance()->m_KeyStates[SDL_SCANCODE_D] && !Input::GetInstance()->m_KeyStates[SDL_SCANCODE_S]){
+            TextureManager::GetInstance()->LoadText("MOVEKEY", "W", TURQOISE);
             m_RigidBody->ApplyForceY(-150);
             orient = 4;
             idle = false;
@@ -59,6 +78,7 @@ void Warrior::Update(float dt){
     }
     if(Input::GetInstance()->GetKeyDown(SDL_SCANCODE_S)){
         if(!Input::GetInstance()->m_KeyStates[SDL_SCANCODE_A] && !Input::GetInstance()->m_KeyStates[SDL_SCANCODE_D] && !Input::GetInstance()->m_KeyStates[SDL_SCANCODE_W]){
+            TextureManager::GetInstance()->LoadText("MOVEKEY", "S", TURQOISE);
             m_RigidBody->ApplyForceY(150);
             orient = 1;
             idle = false;
@@ -68,17 +88,16 @@ void Warrior::Update(float dt){
 
     m_RigidBody->Update(dt);
 
+
     m_LastSafePosition.X = m_Transform->X;
     m_Transform->X += m_RigidBody->Position().X;
     m_Collider->Set(m_Transform->X + 7, m_Transform->Y + 7, boxsize, boxsize);
-    if(CollisionHandler::GetInstance()->MapCollision(m_Collider->GetBox())) m_Transform->X = m_LastSafePosition.X;
+    if (CollisionHandler::GetInstance()->MapCollision(m_Collider->GetBox())) m_Transform->X = m_LastSafePosition.X;
 
     m_LastSafePosition.Y = m_Transform->Y;
     m_Transform->Y += m_RigidBody->Position().Y;
     m_Collider->Set(m_Transform->X + 7, m_Transform->Y + 7, boxsize, boxsize);
-    if(CollisionHandler::GetInstance()->MapCollision(m_Collider->GetBox())) m_Transform->Y = m_LastSafePosition.Y;
-    //m_Transform->TranslateX(m_RigidBody->Position().X);
-    //m_Transform->TranslateY(m_RigidBody->Position().Y);
+    if (CollisionHandler::GetInstance()->MapCollision(m_Collider->GetBox())) m_Transform->Y = m_LastSafePosition.Y;
 
     if(idle == false) m_Animation->Update();
 }

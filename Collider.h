@@ -7,7 +7,9 @@ class Collider{
     SDL_FRect m_Buffer;
 public:
     inline SDL_FRect GetBox(){return m_Box;}
-    inline void SetBuffer(float x, float y, float w, float h){m_Buffer = {x, y, w, h};}
+    inline void SetBuffer(float x, float y, float w, float h){
+        m_Buffer = {x, y, w, h};
+    }
 
     void Set(float x, float y, float w, float h){
         m_Box = {x - m_Buffer.x,
