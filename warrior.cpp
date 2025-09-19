@@ -49,28 +49,9 @@ void Warrior::Update(float dt){
     idle = true;
     m_RigidBody->UnSetForce();
     TextureManager::GetInstance()->Drop("MOVEKEY");
-    
-    /*if(InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_A)){
-        if(InputHandler::GetInstance()->Down(SDL_SCANCODE_A)){
-            InputHandler::GetInstance()->Push(SDL_SCANCODE_A);
-            InputHandler::GetInstance()->buffer.append("A");
-        }
-    }
-    if(InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_D)){
-        InputHandler::GetInstance()->Push(SDL_SCANCODE_D);
-        InputHandler::GetInstance()->buffer.append("D");
-    }
-    if(InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_W)){
-        InputHandler::GetInstance()->Push(SDL_SCANCODE_W);
-        InputHandler::GetInstance()->buffer.append("W");
-    }
-    if(InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_S)){
-        InputHandler::GetInstance()->Push(SDL_SCANCODE_S);
-        InputHandler::GetInstance()->buffer.append("S");
-    }*/
 
     if(InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_A)){
-        if(!InputHandler::GetInstance()->m_KeyStates[SDL_SCANCODE_D] && !InputHandler::GetInstance()->m_KeyStates[SDL_SCANCODE_W] && !InputHandler::GetInstance()->m_KeyStates[SDL_SCANCODE_S]){
+        if(!InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_D) && !InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_W) && !InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_S)){
             //TextureManager::GetInstance()->LoadText("MOVEKEY", "A", TURQOISE);
             m_RigidBody->ApplyForceX(-150);
             orient = 2;
@@ -79,7 +60,7 @@ void Warrior::Update(float dt){
         }
     }
     if(InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_D)){
-        if(!InputHandler::GetInstance()->m_KeyStates[SDL_SCANCODE_A] && !InputHandler::GetInstance()->m_KeyStates[SDL_SCANCODE_W] && !InputHandler::GetInstance()->m_KeyStates[SDL_SCANCODE_S]){
+        if(!InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_A) && !InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_W) && !InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_S)){
             //TextureManager::GetInstance()->LoadText("MOVEKEY", "D", TURQOISE);
             m_RigidBody->ApplyForceX(150);
             orient = 3;
@@ -88,7 +69,7 @@ void Warrior::Update(float dt){
         }
     }
     if(InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_W)){
-        if(!InputHandler::GetInstance()->m_KeyStates[SDL_SCANCODE_A] && !InputHandler::GetInstance()->m_KeyStates[SDL_SCANCODE_D] && !InputHandler::GetInstance()->m_KeyStates[SDL_SCANCODE_S]){
+        if(!InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_A) && !InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_D) && !InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_S)){
             //TextureManager::GetInstance()->LoadText("MOVEKEY", "W", TURQOISE);
             m_RigidBody->ApplyForceY(-150);
             orient = 4;
@@ -97,7 +78,7 @@ void Warrior::Update(float dt){
         }
     }
     if(InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_S)){
-        if(!InputHandler::GetInstance()->m_KeyStates[SDL_SCANCODE_A] && !InputHandler::GetInstance()->m_KeyStates[SDL_SCANCODE_D] && !InputHandler::GetInstance()->m_KeyStates[SDL_SCANCODE_W]){
+        if(!InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_A) && !InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_D) && !InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_W)){
             //TextureManager::GetInstance()->LoadText("MOVEKEY", "S", TURQOISE);
             m_RigidBody->ApplyForceY(150);
             orient = 1;

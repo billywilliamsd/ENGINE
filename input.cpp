@@ -8,16 +8,9 @@
 #define ORANGE {255, 40, 0, 0}
 using namespace std;
 
-InputHandler* InputHandler::s_Instance = nullptr;
+InputQueue* InputQueue::instance = nullptr;
+InputHandler* InputHandler::instance = nullptr;
 
-InputHandler::InputHandler() : L(nullptr){
-    m_KeyStates = SDL_GetKeyboardState(nullptr);
-}
-
-//A - 97 - 4
-//D - 100 - 26
-//W - 119 - 7
-//S - 115 - 22
 void InputHandler::Listen(){
     SDL_Event event;
 
@@ -37,12 +30,9 @@ void InputHandler::Listen(){
     }
 
 }
-
 bool InputHandler::GetKeyDown(SDL_Scancode key){
     return m_KeyStates[key] == 1;
 }
-
-
 void InputHandler::KeyUp(){
     m_KeyStates = SDL_GetKeyboardState(nullptr);
     if(m_KeyStates[SDL_SCANCODE_W] == 0){
@@ -50,7 +40,6 @@ void InputHandler::KeyUp(){
     }
 
 }
-
 void InputHandler::KeyDown(){
     m_KeyStates = SDL_GetKeyboardState(nullptr);
     if(m_KeyStates[SDL_SCANCODE_W]){
@@ -58,145 +47,81 @@ void InputHandler::KeyDown(){
     }
 }
 
-void InputHandler::Push(int n){
-    cout << "Push(" << n << ")\n";
-    if (Down(n)) {
-        cout << "\tDown(" << n << ") returned true, duplicate found, returning..." << endl;
+void InputQueue::Print(){
+    if(q == nullptr) cout << "(empty)\n";
+    cout << q->code;
+    PrintKey(q->next);
+}
+
+void InputQueue::PrintKey(Key* z){
+    if(z == nullptr){
+        cout << endl;
         return;
     }
-    if (L == nullptr) {
-        cout << "\tL is empty, putting {" << GetChar(n) << "} in 1st slot" << endl;
-        L = new Key{ n, nullptr };
+    cout << " :: " << z->code;
+    PrintKey(z->next);
+}
+
+void InputQueue::Push(int n){
+    if(Contains(n)) return;
+    if(q == nullptr){
+        q = new Key{n, nullptr};
+        return;
     }
-    else PushKeys(n, L);
+    PushKey(n, q);
 }
 
-void InputHandler::PushKeys(int n, Key* g){
-    cout << "PushKeys(" << n << "," << "-" << ")" << endl;
-    if (g->next == nullptr) {
-        cout << "\tg->next == nullptr, putting {" << GetChar(n) << "} in g->next" << endl;
-        g->next = new Key{ n, nullptr };
+void InputQueue::PushKey(int n, Key* z){
+    if(z->next == nullptr){
+        z->next = new Key{n, nullptr};
     }
-    else PushKeys(n, g->next);
+    else PushKey(n, z->next);
 }
 
-void InputHandler::Print(){
-    if (L == nullptr) return;
-    PrintKeys(L);
-    cout << endl;
+bool InputQueue::Contains(int n){
+    if(q == nullptr) return false;
+    else if(q->code == n) return true;
+    else return ContainsIn(n, q->next);
 }
 
-void InputHandler::PrintKeys(Key* g){
-    cout << g->code << endl;
-    if (g->next == nullptr) return;
-    PrintKeys(g->next);
+bool InputQueue::ContainsIn(int n, Key* z){
+    if(z == nullptr) return false;
+    if(z->code == n) return true;
+    return ContainsIn(n, z->next);
+
 }
 
-void InputHandler::Remove(int n){
-    if(L == nullptr) return;
-    if(L->code == n){
-        if(L->next == nullptr){
-            delete(L);
+void InputQueue::Remove(int n){
+    if(q == nullptr) return;
+    if(q->code == n){
+        if(q->next == nullptr){
+            delete(q);
+            q = nullptr;
             return;
         }
-        Key* temp = L->next;
-        delete(L);
-        L = temp;
-        return;
+        Key* temp = q->next;
+        delete(q);
+        q = temp;
     }
-    
-    RemoveKeys(n, L);
+    RemoveKey(n, q);
 }
 
-void InputHandler::RemoveKeys(int n, Key* g){
-    if(g->next->code == n){
-        if(g->next->next == nullptr){
-            delete(g->next);
-            g->next = nullptr;
+void InputQueue::RemoveKey(int n, Key* z){
+    if(z->next == nullptr){
+        return;
+    }
+    if(z->next->code == n){
+        if(z->next->next == nullptr){
+            delete(z->next);
+            z->next = nullptr;
             return;
         }
-        Key* temp = g->next->next;
-        delete(g->next);
-        g->next = temp;
-        return;
+        else{
+            Key* temp = z->next->next;
+            delete(z->next);
+            z->next = temp;
+            return;
+        }
     }
-}
-
-void InputHandler::GetList(){
-    if(L == nullptr) return;
-    cout << "L->code == " << L->code << endl;
-    const string c = GetChar(L->code);
-    List.assign(c);
-    cout << "\tList == " << List << endl;
-    GetListItem(L->next);
-}
-
-void InputHandler::GetListItem(Key* g){
-    if (g == nullptr) {
-        cout << "g == nullptr\n\t";
-        cout << "List == " << List << endl;
-        return;
-    }
-    else {
-        cout << "g->code == " << g->code << endl;
-    }
-    List.append(" << ");
-    const string c = GetChar(g->code);
-    List.append(c);
-    cout << "\tList == " << List << endl;
-    GetListItem(g->next);
-}
-
-int InputHandler::GetKey(int n){
-    switch(n){
-    case SDL_SCANCODE_A: return 4;
-    case SDL_SCANCODE_D: return 26;
-    case SDL_SCANCODE_W: return 7;
-    case SDL_SCANCODE_S: return 22;
-    default: assert(0);
-    }
-}
-
-
-bool InputHandler::Down(int n){
-    cout << "Down(" << n << ")\n";
-    if (L == nullptr) return false;
-    if (L->code == GetKey(n)) return true;
-    else return IsDown(n, L->next);
-}
-
-bool InputHandler::IsDown(int n, Key* g){
-    cout << "\tIsDown(" << n << ")\n";
-    if (g == nullptr) {
-        cout << "\t\treturning false\n";
-        return false;
-    }
-    if (g->code == GetKey(n)) {
-        cout << "\t\treturning true\n";
-        return true;
-    }
-    else return IsDown(n, g->next);
-}
-
-string InputHandler::GetChar(int n){
-    string s = "";
-    switch(n){
-    case SDL_SCANCODE_A: {
-        s.push_back('A');
-        return s;
-    }
-    case SDL_SCANCODE_D: {
-        s.push_back('D');
-        return s;
-    }
-    case SDL_SCANCODE_W: {
-        s.push_back('W');
-        return s;
-    }
-    case SDL_SCANCODE_S: {
-        s.push_back('S');
-        return s;
-    }
-    default: assert(0);
-    }
+    RemoveKey(n, z->next);
 }
