@@ -27,6 +27,7 @@ public:
 };
 
 class InputHandler{
+    InputHandler() { m_KeyStates = new bool[512]; }
     static InputHandler* instance;
     void KeyUp();
     void KeyDown();
