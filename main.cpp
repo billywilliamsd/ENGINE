@@ -13,7 +13,7 @@ TTF_Font* gFont;
 
 int main(int argc, char** argv){
     Engine::GetInstance()->Init();
-    
+
     while(Engine::GetInstance()->IsRunning()){
         Engine::GetInstance()->Events();
         Engine::GetInstance()->Update();

@@ -35,16 +35,23 @@ bool InputHandler::GetKeyDown(SDL_Scancode key){
 }
 void InputHandler::KeyUp(){
     m_KeyStates = SDL_GetKeyboardState(nullptr);
-    if(m_KeyStates[SDL_SCANCODE_W] == 0){
-        TextureManager::GetInstance()->LoadText("WW", "W", ORANGE);
-    }
 
 }
 void InputHandler::KeyDown(){
     m_KeyStates = SDL_GetKeyboardState(nullptr);
-    if(m_KeyStates[SDL_SCANCODE_W]){
-        TextureManager::GetInstance()->LoadText("WW", "W", GREEN);
+    if(m_KeyStates[SDL_SCANCODE_A]){
+        InputQueue::GetInstance()->Push(SDL_SCANCODE_A);
     }
+    if(m_KeyStates[SDL_SCANCODE_D]){
+        InputQueue::GetInstance()->Push(SDL_SCANCODE_D);
+    }
+    if(m_KeyStates[SDL_SCANCODE_W]){
+        InputQueue::GetInstance()->Push(SDL_SCANCODE_W);
+    }
+    if(m_KeyStates[SDL_SCANCODE_S]){
+        InputQueue::GetInstance()->Push(SDL_SCANCODE_S);
+    }
+    InputQueue::GetInstance()->Print();     
 }
 
 void InputQueue::Print(){
