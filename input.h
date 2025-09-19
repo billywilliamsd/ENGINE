@@ -20,10 +20,12 @@ class InputQueue{
     void RemoveKey(int n, Key* z);
 public:
     static InputQueue* GetInstance(){return instance = (instance != nullptr) ? instance : new InputQueue();}
+    void Render();
     void Print();
     void Push(int n);
     bool Contains(int n);
     void Remove(int n);
+    int Pop();
 };
 
 class InputHandler{

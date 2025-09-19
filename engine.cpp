@@ -98,6 +98,10 @@ void Engine::Render(){
     //TextureManager::GetInstance()->Draw("KEYS", 700, 500, 200, 100);
     //TextureManager::GetInstance()->Draw("WW", 0, 450, 100, 100);
     TextureManager::GetInstance()->Draw("KEYLIST", 0, 500, 100, 50);
+    InputQueue::GetInstance()->Push(7);
+    InputQueue::GetInstance()->Push(22);
+    InputQueue::GetInstance()->Push(4);
+    InputQueue::GetInstance()->Render();
     SDL_RenderPresent(r);
 }
 

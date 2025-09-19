@@ -6,6 +6,7 @@
 #include <iostream>
 #define GREEN {0x00, 255, 0x00, 0x00}
 #define ORANGE {255, 40, 0, 0}
+#define PINK {254, 1, 154, 0}
 using namespace std;
 
 InputQueue* InputQueue::instance = nullptr;
@@ -39,7 +40,7 @@ void InputHandler::KeyUp(){
 }
 void InputHandler::KeyDown(){
     m_KeyStates = SDL_GetKeyboardState(nullptr);
-    if(m_KeyStates[SDL_SCANCODE_A]){
+    /*if(m_KeyStates[SDL_SCANCODE_A]){
         InputQueue::GetInstance()->Push(SDL_SCANCODE_A);
     }
     if(m_KeyStates[SDL_SCANCODE_D]){
@@ -50,12 +51,14 @@ void InputHandler::KeyDown(){
     }
     if(m_KeyStates[SDL_SCANCODE_S]){
         InputQueue::GetInstance()->Push(SDL_SCANCODE_S);
-    }
-    InputQueue::GetInstance()->Print();     
+    }*/
 }
 
 void InputQueue::Print(){
-    if(q == nullptr) cout << "(empty)\n";
+    if(q == nullptr){
+        cout << "(empty)\n";
+        return;
+    }
     cout << q->code;
     PrintKey(q->next);
 }
@@ -131,4 +134,28 @@ void InputQueue::RemoveKey(int n, Key* z){
         }
     }
     RemoveKey(n, z->next);
+}
+
+int InputQueue::Pop(){
+    if(q == nullptr){
+        cout << "\tq is empty!\n";
+        return 0;
+    }
+    cout << "\tRemove(" << q->code << ")\n";
+    Remove(q->code);
+    Print(); 
+}
+
+void InputQueue::Render(){
+    cout << "Render()\n";
+    int keys[4];
+    for(int i = 0; i < 4; i++){
+        cout << "\ti[" << i << "]" << endl;
+        if(q == nullptr){
+            cout << "\tq == nullptr\n";
+            break;
+        }
+        cout << "\tPop()\n";
+        int x = Pop();
+    }
 }
